@@ -1,10 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  FlatList,
-} from "react-native";
+import { StyleSheet, Text, SafeAreaView, FlatList } from "react-native";
 import Constants from "expo-constants";
 import Row from "./components/Row";
 import Add from "./components/Add";
@@ -17,17 +12,22 @@ export default function App() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    getAndSetData();
+    getData()
+      .then((data) => {
+        setData(data);
+      })
+      .catch((e) => {
+        console.log(e);
+        console.log("Error getting data");
+      });
   }, []);
 
   useEffect(() => {
-    storeData(data);
+    storeData(data).catch((e) => {
+      console.log(e);
+      console.log("Error storing data");
+    });
   }, [data]);
-
-  const getAndSetData = async () => {
-    const data = await getData();
-    setData(data);
-  };
 
   const add = useCallback(
     (name) => {
